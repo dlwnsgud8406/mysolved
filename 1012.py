@@ -1,12 +1,43 @@
-T = input()
-T = int(T)
-pair_list = []
-for i in range(0, T):
-    M, N, K = input().split()
-    M = int(M)
-    N = int(N) 
-    K = int(K)
-    for j in range(0, K):
-        X, Y = input().split()
-        pair_list.append((int(X), int(Y)))
-    print(pair_list)
+from collections import deque
+
+dx = [0,0,1,-1]
+dy = [1,-1,0,0]
+
+t = int(input())
+
+def bfs(graph, a, b):
+    queue = deque()
+    queue.append((a,b))
+    graph[a][b] = 0
+
+    while queue:
+        x, y = queue.popleft()
+        for i in range(4):
+            nx = x+dx[i]
+            ny = y+dy[i]
+            if nx < 0 or nx >=n or ny < 0 or ny >= m:
+                continue
+            if graph[nx][ny] == 1:
+                graph[nx][ny] = 0
+                queue.append((nx, ny))
+    return
+
+for i in range(t):
+    cnt = 0
+    n, m, k = map(int,input().split())
+    graph = [[0]*m for _ in range(n)] # 0,0으로 가득한 dequeue를 만들기 위함
+
+    # print(graph)
+
+    for j in range(k):
+        x, y = map(int, input().split())
+        graph[x][y] = 1
+
+    print(graph)
+
+    for a in range(n):
+        for b in range(m):
+            if graph[a][b] == 1:
+                bfs(graph, a, b)
+                cnt += 1
+    print(cnt)

@@ -1,20 +1,22 @@
 def solution(N, stages):
-    string = ''
     answer = []
     arr = []
-    for char in stages:
-        string += str(char)
     for i in range(1, N+1):
-        num = string.count(str(i))
+        num = stages.count(i)
+        rm_set = {i}
+        failure = 0
         try:
-            failure = num / len(string)
+            failure = num / len(stages)
         except ZeroDivisionError:
-            continue
+            arr.append((i, 0))
+            stages = [i for i in stages if i not in rm_set]
+            arr = sorted(arr, key = lambda x:-x[1])
         else:
             arr.append((i, failure))
-        string = string.replace(str(i), '')
-    arr = sorted(arr, key = lambda x: (-x[1], x[0]))
+            stages = [i for i in stages if i not in rm_set]
+            arr = sorted(arr, key = lambda x:-x[1])
+
     for i in range(N):
         answer.append(arr[i][0])
     return answer
-print(solution(4, [4, 4, 4, 4, 4]))
+print(solution(5, [2, 1, 2, 6, 2, 4, 3, 3]))
